@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.user.user_modules.user_teacher.mappers.ClassMapper">
+
+<!--    未被删除-->
+    <sql id="noDeleted">
+        ${date_base}.deleted = 0
+    </sql>
+
+<!--    通过老师id查找班级信息集合-->
+    <select id="findClassInfoListByTeacherId" resultType="com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassInfoVO">
+        select
+            tc.class_id,
+            tc.class_name,
+            tc.grade,
+            tc.student_num,
+            tc.max_student_num
+        from
+            t_class tc
+        join
+            t_user tu
+        on
+            tc.teacher_id = tu.user_id
+        where
+            tc.teacher_id = #{teacherId}
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tc"/>
+        </include>;
+    </select>
+
+<!--    添加班级信息-->
+    <insert id="insertClassInfo">
+        insert into
+            t_class
+        values
+        <foreach collection="classEntities" item="classEntity" separator="," open="(" close=")">
+            #{classEntity.classId},#{classEntity.teacherId},#{classEntity.className},
+            #{classEntity.grade},#{classEntity.studentNum},#{classEntity.maxStudentNum},
+            #{classEntity.createTime},#{classEntity.updateTime},#{classEntity.version},
+            #{classEntity.deleted}
+        </foreach>
+    </insert>
+
+<!--    批量逻辑删除t_class-->
+    <update id="deleteClassInfo">
+        update
+            t_class as tc
+        set
+            deleted = 1
+        where
+            class_id
+        in (
+            <foreach collection="classIdList" item="classId" separator=",">
+                #{classId}
+            </foreach>
+        )
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tc"/>
+        </include>
+    </update>
+
+<!--    修改班级信息-->
+    <update id="changeClassInfo">
+        update
+            t_class tc
+        set
+            <if test="classInfoChangeBO.className != null and classInfoChangeBO.className != ''">
+                class_name = #{classInfoChangeBO.className},
+            </if>
+            <if test="classInfoChangeBO.grade != null and classInfoChangeBO.grade > 0">
+                grade = #{classInfoChangeBO.grade},
+            </if>
+            <if test="classInfoChangeBO.maxStudentNum != null and classInfoChangeBO.maxStudentNum > 0">
+                max_student_num = #{classInfoChangeBO.maxStudentNum},
+            </if>
+            update_time = #{classInfoChangeBO.updateTime}
+        where
+            class_id = #{classInfoChangeBO.classId}
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tc"/>
+        </include>
+    </update>
+
+<!--    更新班级人数-->
+    <update id="updateClassStudentNum">
+        update
+            t_class tc
+        set
+            student_num = student_num + #{addStudentNum}
+        where
+            class_id = #{classId}
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tc"/>
+        </include>
+    </update>
+
+<!--    通过classId查找班级信息(加行级锁)-->
+    <select id="selectClassByClassId" resultType="com.coder_mart_server.user.user_model.entity.ClassEntity">
+        select
+            tc.class_id,
+            tc.teacher_id,
+            tc.class_name,
+            tc.grade,
+            tc.student_num,
+            tc.max_student_num,
+            tc.create_time,
+            tc.update_time,
+            tc.deleted,
+            tc.version
+        from
+            t_class tc
+        where
+            tc.class_id = #{classId}
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tc"/>
+        </include>
+        for update;
+    </select>
+
+</mapper>

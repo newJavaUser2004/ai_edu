@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.security.security_modules.authenticator.mappers.UserLoginMapper">
+    <resultMap id="secureUserMap" type="com.coder_mart_server.security.security_model.entity.SecureUser">
+        <id column="user_id" property="userId"></id>
+        <collection property="roles" ofType="string">
+            <result column="role_name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserByAuthentication" resultMap="secureUserMap">
+        select
+            tu.user_id,
+            tr.role_name
+        from
+            t_user as tu
+        left join
+            t_role_roster as trr
+        on
+            tu.user_id = trr.user_id
+        left join
+            t_role as tr
+        on
+            trr.role_id = tr.role_id
+        where
+            tu.username = #{authentication.username}
+        and
+            tu.password = #{authentication.password}
+        and
+            tr.role_type = #{authentication.roleType}
+    </select>
+</mapper>

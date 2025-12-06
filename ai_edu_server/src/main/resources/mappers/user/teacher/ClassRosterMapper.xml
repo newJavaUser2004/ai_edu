@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.user.user_modules.user_teacher.mappers.ClassRosterMapper">
+<!--    当前数据未被删除-->
+    <sql id="noDeleted">
+        ${date_base}.deleted = 0;
+    </sql>
+
+    <sql id="selectStudentExists">
+        exists(
+            select
+                *
+            from
+                t_user ts
+            left join
+                t_role_roster trr
+            on
+                ts.user_id = trr.user_id
+            left join
+                t_role tr
+            on
+                trr.role_id = tr.role_id
+            where
+                tr.role_type = 0
+            and
+                ts.user_id = #{studentId}
+        )
+    </sql>
+
+    <resultMap id="classRosterVOMap" type="com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassRosterVO">
+        <id column="class_id" property="classId"></id>
+        <collection property="studentInfoVOList" ofType="com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.StudentInfoVO">
+            <id column="user_id" property="studentId"></id>
+            <result column="name" property="name"></result>
+            <result column="age" property="age"></result>
+            <result column="create_time" property="createTime"></result>
+            <result column="role_name" property="roleName"></result>
+            <result column="role_type" property="roleType"></result>
+            <result column="role_content" property="roleContent"></result>
+        </collection>
+    </resultMap>
+
+    <!--    根据班级id查找学生信息集合-->
+    <select id="findClassRostByClassId" resultMap="classRosterVOMap">
+        select
+            tcr.class_id,
+            tu.user_id,
+            tu.name,
+            tu.age,
+            tu.create_time,tr.role_name,tr.role_type,tr.role_content
+        from
+            t_class_roster as tcr
+        left join
+            t_user as tu
+        on
+            tcr.student_id = tu.user_id
+        left join
+            t_role_roster as trr
+        on
+            tu.user_id = trr.user_id
+        left join
+            t_role as tr
+        on
+            trr.role_id = tr.role_id
+        where
+            tcr.class_id = #{classId}
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tcr"/>
+        </include>;
+    </select>
+
+    <!--    批量拉学生进入班级-->
+    <insert id="insertStudentToClassRoster">
+        insert into
+            t_class_roster
+        values
+        <foreach collection="classRosterEntities" item="classRosterEntity" separator=",">
+            (#{classRosterEntity.classId},#{classRosterEntity.studentId},
+            #{classRosterEntity.createTime},#{classRosterEntity.updateTime},
+            #{classRosterEntity.version},#{classRosterEntity.deleted})
+        </foreach>
+    </insert>
+
+    <!--    根据班级id删除对应班级花名册-->
+    <update id="deleteClassRoster">
+        update
+            t_class_roster as tcr
+        set
+            deleted = 1
+        where
+            class_id
+        in (
+            <foreach collection="classIdList" item="classId" separator=",">
+                #{classId}
+            </foreach>
+        )
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tcr"/>
+        </include>
+    </update>
+</mapper>

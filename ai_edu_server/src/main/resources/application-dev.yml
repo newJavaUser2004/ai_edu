@@ -1,0 +1,30 @@
+my-config:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: star_ai_edu
+    username: root
+    password: zyl20
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+
+  # token生存时间
+  token:
+    # 是否长期生存（true则token不会过期）
+    long-live: false
+    # 过期存活时间
+    live-time: 1
+    # 存活时间单位（枚举类，全大写）
+    time-unit: DAYS
+
+  # 时间戳
+  snow:
+    # 开始时间，2025/8/11
+    start-time: 1754901015462
+    # 机房id
+    computer-room-id: 1
+    # 机器id
+    computer-id: 1
