@@ -6,7 +6,11 @@
 
     <groupId>com.example</groupId>
     <artifactId>coderMart</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>ai_edu_gui</module>
+    </modules>
     <name>coderMart</name>
     <description>Demo project for Spring Boot</description>
 

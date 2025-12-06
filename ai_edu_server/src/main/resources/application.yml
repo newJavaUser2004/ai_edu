@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+
+  # 数据库配置
+  datasource:
+    driver-class-name: ${my-config.datasource.driver-class-name}
+    url: jdbc:mysql://${my-config.datasource.host}:${my-config.datasource.port}/${my-config.datasource.database}
+    username: ${my-config.datasource.username}
+    password: ${my-config.datasource.password}
+
+  # redis配置
+  redis:
+    host: ${my-config.redis.host}
+    port: ${my-config.redis.port}
+    database: ${my-config.redis.database}
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mappers/**/*.xml
