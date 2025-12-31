@@ -6,9 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 唯一id生成工具
+ * 雪花算法生成id
  */
 @Slf4j
-public class UniqueIdHelpper {
+public class UniqueIdHelper {
     //雪花算法参数
     private final SnowProperties snowProperties;
 
@@ -45,7 +46,7 @@ public class UniqueIdHelpper {
     //最大序列号数
     private long maxSerialNum = ~(-1l << serialNumBytes);
 
-    public UniqueIdHelpper(SnowProperties snowProperties) {
+    public UniqueIdHelper(SnowProperties snowProperties) {
         this.snowProperties = snowProperties;
         this.startTime = snowProperties.getStartTime();
         this.computerRoomId = snowProperties.getComputerRoomId();

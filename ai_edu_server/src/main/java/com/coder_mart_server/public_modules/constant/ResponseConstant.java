@@ -39,6 +39,12 @@ public class ResponseConstant {
 
         //非本人操作
         public static final String ACTION_USER_NOT_OWN = "非本人操作";
+
+        //空文件上传
+        public static final String UPLOAD_FILE_IS_EMPTY = "上传文件为空";
+
+        //文件无拓展名
+        public static final String UPLOAD_FILE_HAS_NO_EXTENSION = "上传文件无拓展名";
     }
 
     //响应体类型

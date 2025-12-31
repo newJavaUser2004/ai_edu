@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/student/admin")
 @Slf4j
 public class StudentAdminController {
-
+    //学生管理服务
     private final StudentAdminService studentAdminService;
 
     /**
@@ -61,6 +61,7 @@ public class StudentAdminController {
     @DeleteMapping("/clear")
     @PermissionsType(types = {PermissionsConstant.HEAD_TEACHER})
     public Result<String> clearStudent(@RequestBody ClassActiveStudentDTO studentInvitedDTO){
+        studentAdminService.clearStudentFromClass(studentInvitedDTO);
         return Result.success();
     }
 

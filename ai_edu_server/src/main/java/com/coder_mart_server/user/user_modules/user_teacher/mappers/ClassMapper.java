@@ -56,4 +56,9 @@ public interface ClassMapper {
      * @param addStudentNum
      */
     void updateClassStudentNum(@Param("classId") Long classId,@Param("addStudentNum") Integer addStudentNum);
+
+    /**
+     * 批量删除学生
+     */
+
 }

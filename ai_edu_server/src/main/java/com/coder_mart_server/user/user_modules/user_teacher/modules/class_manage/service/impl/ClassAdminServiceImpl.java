@@ -1,10 +1,9 @@
 package com.coder_mart_server.user.user_modules.user_teacher.modules.class_manage.service.impl;
 
 import com.coder_mart_server.public_modules.exceptions.UserException;
-import com.coder_mart_server.public_modules.helppers.UniqueIdHelpper;
+import com.coder_mart_server.public_modules.helppers.UniqueIdHelper;
 import com.coder_mart_server.public_modules.model.enums.ResultEnum;
 import com.coder_mart_server.public_modules.model.enums.StringEnum;
-import com.coder_mart_server.public_modules.model.results.Result;
 import com.coder_mart_server.security.security_modules.authenticator.context.ISecurity;
 import com.coder_mart_server.user.user_constant.EntityDefaultConstant;
 import com.coder_mart_server.user.user_model.entity.ClassEntity;
@@ -19,7 +18,6 @@ import com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassRosterV
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class ClassAdminServiceImpl implements ClassAdminService {
     private final ClassRosterMapper classRostMapper;
 
     //唯一id生成器
-    private final UniqueIdHelpper uniqueIdHelpper;
+    private final UniqueIdHelper uniqueIdHelper;
 
     /**
      * 根据老师id，批量获取班级信息
@@ -77,7 +75,7 @@ public class ClassAdminServiceImpl implements ClassAdminService {
             copyNotNullProperties(classInfoDTO,classEntity);
 
             //设置唯一班级id
-            Long classId = uniqueIdHelpper.snowIdBuild();
+            Long classId = uniqueIdHelper.snowIdBuild();
             classEntity.setClassId(classId);
             //设置班级老师id
             classEntity.setTeacherId(teacherId);

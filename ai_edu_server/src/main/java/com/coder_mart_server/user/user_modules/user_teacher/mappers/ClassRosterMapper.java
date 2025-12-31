@@ -1,6 +1,7 @@
 package com.coder_mart_server.user.user_modules.user_teacher.mappers;
 
 import com.coder_mart_server.user.user_model.entity.ClassRosterEntity;
+import com.coder_mart_server.user.user_modules.user_teacher.pojo.dto.ClassActiveStudentDTO;
 import com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassRosterVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,4 +29,6 @@ public interface ClassRosterMapper {
      * @param classIdList
      */
     void deleteClassRoster(@Param("classIdList") List<Long> classIdList);
+
+    Integer deleteByStudentIds(@Param("studentIdList") List<Long> studentIdList );
 }

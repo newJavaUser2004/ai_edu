@@ -1,7 +1,19 @@
 server:
   port: 8080
 
+file:
+  #静态资源对外的访问路径
+  virtualPath: /files/**
+  #实际的访问路径
+  realPath: D:/keshe_of_LocalFiles
+
 spring:
+  servlet:
+    multipart:
+      #单个文件最大大小
+      max-file-size: 20MB
+      #一个HTTP请求最大允许大小（多文件上传最大容量）
+      max-request-size: 100MB
   profiles:
     active: dev
 

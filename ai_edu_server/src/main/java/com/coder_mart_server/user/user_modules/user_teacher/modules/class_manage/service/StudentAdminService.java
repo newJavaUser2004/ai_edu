@@ -17,4 +17,6 @@ public interface StudentAdminService {
      * @return
      */
     List<ClassRosterEntity> invitedStudent(ClassActiveStudentDTO studentInvitedDTO);
+
+    void clearStudentFromClass(ClassActiveStudentDTO studentInvitedDTO);
 }

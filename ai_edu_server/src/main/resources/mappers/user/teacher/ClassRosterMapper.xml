@@ -102,4 +102,22 @@
             <property name="date_base" value="tcr"/>
         </include>
     </update>
+    <!--  根据studentId批量逻辑删除学生  -->
+    <update id="deleteByStudentIds">
+        update 
+            t_class_roster as tcr
+        set
+            deleted = 1
+        where 
+            student_id
+        in (
+            <foreach collection="studentIdList" item="studentId" separator=",">
+                #{studentId}
+            </foreach>
+        )
+        and
+        <include refid="noDeleted">
+            <property name="date_base" value="tcr"/>
+        </include>
+    </update> 
 </mapper>

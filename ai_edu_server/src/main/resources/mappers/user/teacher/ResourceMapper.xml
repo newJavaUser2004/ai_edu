@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.work_publish_modules.teachers.mappers.ResourceMapper">
+
+    <!-- 上传文件-->
+    <insert id="uploadResource">
+        insert into
+        t_resource (resource_id,url,resource_name,class_id)
+        values
+        <foreach collection="reList" item="resource"  separator=",">
+            (#{resource.resourceId},
+             #{resource.url},
+             #{resource.resourceName},
+             #{resource.classId})
+        </foreach>
+
+    </insert>
+    <!--资源回显-->
+    <select id="research" resultType="com.coder_mart_server.work_publish_modules.teachers.pojo.vo.ResourceVO">
+        select
+               resource_name,url,resource_id
+        from
+             t_resource
+        where
+              class_id=#{classId}
+        and
+              deleted = 0
+    </select>
+
+    <!--逻辑删除-->
+    <update id="deleteResource">
+        UPDATE t_resource
+        SET deleted = 1
+        WHERE resource_id IN
+        <foreach collection="dto.resourceIdList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND deleted = 0
+    </update>
+</mapper>

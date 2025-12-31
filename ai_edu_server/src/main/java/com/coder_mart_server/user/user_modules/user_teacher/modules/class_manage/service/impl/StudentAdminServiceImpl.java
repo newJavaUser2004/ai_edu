@@ -66,9 +66,13 @@ public class StudentAdminServiceImpl implements StudentAdminService {
         //检验class合法性
         ClassEntity classEntity = checkClass(studentInvitedDTO.getClassId());
 
-        //todo 批量逻辑删除t_class_roster
-
-        //todo 更新class学生数量
+        //批量删除+更新class学生数量(wwd)
+        List<Long>studentIdList = studentInvitedDTO.getStudentIdList();
+        if (!studentInvitedDTO.getStudentIdList().isEmpty()) {
+            Integer successNum = classRosterMapper.deleteByStudentIds(studentIdList);
+            Integer subNum = -successNum;
+            classMapper.updateClassStudentNum(studentInvitedDTO.getClassId(), subNum);
+        }
     }
 
     /**
@@ -76,7 +80,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
      * @param classId
      * @return
      */
-    public ClassEntity checkClass(Long classId){
+    private ClassEntity checkClass(Long classId){
         //获取班级数据，检验班级是否存在，计算插入后是否发生人数溢出
         ClassEntity classEntity = classMapper.selectClassByClassId(classId);
         if(classEntity == null){
@@ -85,7 +89,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
         }
 
         Long teacherId = ISecurity.getSecureUser().getUserId();
-        if(classEntity.getTeacherId() != teacherId){
+        if(!classEntity.getTeacherId().equals(teacherId)){
             //当前班级非本人操作
             throw new UserException(ResultEnum.ACTION_USER_ERROR);
         }
@@ -98,7 +102,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
      * 检验class是否可以添加新成员
      * @param studentInvitedDTO
      */
-    public void checkClassCouldInvited(ClassActiveStudentDTO studentInvitedDTO){
+    private void checkClassCouldInvited(ClassActiveStudentDTO studentInvitedDTO){
 
         //检验class合法性
         ClassEntity classEntity = checkClass(studentInvitedDTO.getClassId());
@@ -172,7 +176,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
      * @param classRosterEntities
      * @return
      */
-    public List<Long> checkStudentIsInvited(Long classId, List<Long> needCheckStudentIdList,
+    private List<Long> checkStudentIsInvited(Long classId, List<Long> needCheckStudentIdList,
                                             HashMap<Long, ClassRosterEntity> classRosterEntities){
         //需要被重新检验的学生id集合
         List<Long> newNeedCheckStudentIdList = needCheckStudentIdList;
@@ -202,7 +206,7 @@ public class StudentAdminServiceImpl implements StudentAdminService {
      * @param needCheckStudentIdList
      * @return 可被插入的用户HashMap
      */
-    public Map<Long, ClassRosterEntity> checkStudentRole(List<Long> needCheckStudentIdList,
+    private Map<Long, ClassRosterEntity> checkStudentRole(List<Long> needCheckStudentIdList,
                                        HashMap<Long, ClassRosterEntity> classRosterEntities){
         //从用户中，获取学生id集合
         List<Long> studentIdList = roleMapper.selectStudentFromUserIdList(needCheckStudentIdList);

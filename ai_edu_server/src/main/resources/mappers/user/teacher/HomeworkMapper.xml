@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.work_publish_modules.teachers.mappers.HomeworkMapper">
+
+    <!--上传作业到班级-->
+    <insert id="uploadHomework">
+        insert into
+                t_homework (homework_id,deadline,work_name,url,work_type,class_id)
+        values
+        <foreach collection="poList" item="po" separator=",">
+                    (#{po.homeworkId},
+                     #{po.deadline},
+                    #{po.workName},
+                    #{po.url},
+                    #{po.workType},
+                    #{po.classId})
+        </foreach>
+
+    </insert>
+
+    <!--根据班级id查看作业-->
+    <select id="queryHomework"
+            resultType="com.coder_mart_server.work_publish_modules.teachers.pojo.vo.HomeworkVO">
+        select
+            url,work_type,work_name,deadline
+        from
+            t_homework
+        where
+            class_id = #{classId}
+        and
+            deleted = 0
+    </select>
+</mapper>

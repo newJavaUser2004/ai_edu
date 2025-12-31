@@ -1,14 +1,11 @@
 package com.coder_mart_server;
 
-import com.coder_mart_server.public_modules.helppers.UniqueIdHelpper;
-import com.coder_mart_server.user.user_model.entity.ClassRosterEntity;
+import com.coder_mart_server.security.security_modules.authenticator.context.ISecurity;
 import com.coder_mart_server.user.user_modules.user_teacher.modules.class_manage.service.ClassAdminService;
 import com.coder_mart_server.user.user_modules.user_teacher.modules.class_manage.service.StudentAdminService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.HashMap;
 
 @SpringBootTest
 class CoderMartServerApplicationTests {
@@ -25,8 +22,9 @@ class CoderMartServerApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
-        System.out.println(studentAdminService.getClass());
-        System.out.println(classAdminService.getClass());
+        System.out.println(ISecurity.getSecureUser().getRoles());
+//        System.out.println(studentAdminService.getClass());
+//        System.out.println(classAdminService.getClass());
 //        System.out.println(redisProperties);
 //        System.out.println(tokenLiveProperties.getTimeUnit());
 //        ExcelReader reader = ExcelUtil.getReader(new File("F:\\临时文件\\网络课程学习进度.xlsx"));

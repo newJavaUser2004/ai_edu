@@ -44,6 +44,8 @@ public enum ResultEnum {
     ACTION_USER_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
             ResponseConstant.ErrorMessage.ACTION_USER_NOT_OWN
     );
+
+
     private final int resultCode;
 
     private final String message;
