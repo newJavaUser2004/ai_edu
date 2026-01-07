@@ -2,20 +2,18 @@ package com.coder_mart_server.work_publish_modules.controller;
 
 
 import com.coder_mart_server.public_modules.model.results.Result;
-import com.coder_mart_server.security.security_modules.authenticator.context.ISecurity;
 import com.coder_mart_server.security.security_modules.authorizer.annotation.PermissionsType;
 import com.coder_mart_server.security.security_modules.authorizer.constant.PermissionsConstant;
 import com.coder_mart_server.work_publish_modules.service.UploadService;
 
-import com.coder_mart_server.work_publish_modules.teachers.pojo.dto.LogicDeleteDTO;
-import com.coder_mart_server.work_publish_modules.teachers.pojo.dto.UploadHomeworkDTO;
+import com.coder_mart_server.work_publish_modules.students.pojo.vo.AnswerVO;
+import com.coder_mart_server.work_publish_modules.teachers.pojo.dto.*;
 import com.coder_mart_server.work_publish_modules.teachers.pojo.vo.HomeworkVO;
 import com.coder_mart_server.work_publish_modules.teachers.pojo.vo.ResourceVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,19 +28,15 @@ public class UploadController {
 
     /**
      * 老师上传资源，将url添加进资源表中
-     * @param multipartFileList
-     * @param resourceNameList
-     * @param classId
      * @return
      */
-    @PostMapping("/upload/files")
+
     @PermissionsType(types = {PermissionsConstant.TEACHER_ROLES,PermissionsConstant.HEAD_TEACHER})
-    public Result uploadResources(@RequestPart("files")List<MultipartFile> multipartFileList,
-                                  @RequestParam("resourceNames") List<String> resourceNameList,
+    @PostMapping(value = "/upload/files",consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result uploadResources(@ModelAttribute UploadResourceDTO uploadResourceDTO,
                                   @RequestParam Long classId){
 
-
-        uploadService.uploadResources(multipartFileList,resourceNameList,classId);
+        uploadService.uploadResources(uploadResourceDTO,classId);
 
         return Result.success();
     }
@@ -75,19 +69,15 @@ public class UploadController {
 
     /**
      * 老师上传作业
-     * @param multipartFileList
-     * @param uploadHomeworkDTO
      * @param classId
      * @return
      */
     @PermissionsType(types = {PermissionsConstant.TEACHER_ROLES,PermissionsConstant.HEAD_TEACHER})
     @PostMapping(value = "/upload/homeworks",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result uploadWork(@RequestPart("work") List<MultipartFile> multipartFileList,
-                             @RequestPart("dto") List<UploadHomeworkDTO> uploadHomeworkDTO,
+    public Result uploadWork(@ModelAttribute UploadHomeworkDTO uploadHomeworkDTO,
                              @RequestParam("classId") Long classId){
 
-        uploadService.uploadHomework(multipartFileList,uploadHomeworkDTO,classId);
-
+        uploadService.uploadHomework(uploadHomeworkDTO,classId);
 
         return Result.success();
     }
@@ -102,7 +92,20 @@ public class UploadController {
 
         List<HomeworkVO> homeworkVOList = uploadService.queryHomework(classId);
 
-
         return Result.success(homeworkVOList);
+    }
+
+    /**
+     * 老师查看所有学生作业
+     * @return
+     */
+    @PermissionsType(types = {PermissionsConstant.TEACHER_ROLES,PermissionsConstant.HEAD_TEACHER})
+    @GetMapping("/resource/{classId}/query/{homeworkId}/answers")
+    public Result<List<AnswerVO>> queryAllAnswer(@PathVariable Long classId,
+                                           @PathVariable Long homeworkId){
+       List<AnswerVO> answerVOList = uploadService.queryAllAnswer(classId,homeworkId);
+
+
+        return Result.success(answerVOList);
     }
 }

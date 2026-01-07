@@ -19,17 +19,23 @@
         </foreach>
 
     </insert>
+    <update id="deleteHomework">
+        update t_homework
+        set deleted = 1
+
+    </update>
 
     <!--根据班级id查看作业-->
     <select id="queryHomework"
             resultType="com.coder_mart_server.work_publish_modules.teachers.pojo.vo.HomeworkVO">
         select
-            url,work_type,work_name,deadline
+            url,work_type,work_name,deadline,homework_id
         from
             t_homework
         where
             class_id = #{classId}
         and
             deleted = 0
+        order by create_time
     </select>
 </mapper>

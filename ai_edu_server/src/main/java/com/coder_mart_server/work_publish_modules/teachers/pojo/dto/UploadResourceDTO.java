@@ -5,6 +5,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UploadHomeworkDTO {
-    private List<HomeworkDTO> homeworkDTOList;
+public class UploadResourceDTO {
+    List<ResourceDTO> resourceDTOList;
 }

@@ -1,7 +1,6 @@
 package com.coder_mart_server.work_publish_modules.teachers.mappers;
 
 
-import com.coder_mart_server.work_publish_modules.teachers.pojo.dto.UploadHomeworkDTO;
 import com.coder_mart_server.work_publish_modules.teachers.pojo.entity.Homework;
 import com.coder_mart_server.work_publish_modules.teachers.pojo.vo.HomeworkVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +17,9 @@ public interface HomeworkMapper {
     void uploadHomework(@Param("poList") List<Homework> homeworkPO);
 
     List<HomeworkVO> queryHomework(@Param("classId") Long classId);
+
+    void deleteHomework();
+
 
 
 }

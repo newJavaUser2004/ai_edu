@@ -18,5 +18,7 @@ public class HomeworkVO {
 
     private LocalDateTime deadline;
 
+    private Long homeworkId;
+
 
 }

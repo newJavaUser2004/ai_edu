@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder_mart_server.work_publish_modules.students.mappers.MyHomeworkMapper">
+
+    <insert id="uploadMyHomework">
+        insert into
+            t_stu_answer
+        values
+        <foreach collection="aList" item="answer" separator=",">
+            #{answer.answerId},
+            #{answer.homeworkId},
+            #{answer.studentId},
+            #{answer.classId},
+            #{answer.contentId},
+            #{answer.url}
+        </foreach>
+
+
+
+    </insert>
+    <insert id="uploadContent">
+        insert into
+            t_content (content_id,content)
+        values (
+                #{content.contentId},
+                #{content.content}
+               )
+    </insert>
+</mapper>

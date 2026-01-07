@@ -1,7 +1,6 @@
 package com.coder_mart_server.public_modules.helppers;
 
 import com.coder_mart_server.public_modules.properties.SnowProperties;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**

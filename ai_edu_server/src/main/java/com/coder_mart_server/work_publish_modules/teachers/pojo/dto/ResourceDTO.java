@@ -8,7 +8,5 @@ public class ResourceDTO {
 
     private MultipartFile multipartFile;
 
-    private Long classId;
-
     private String resourceName;
 }
