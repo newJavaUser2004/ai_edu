@@ -5,7 +5,7 @@ file:
   #静态资源对外的访问路径
   virtualPath: /files/**
   #实际的访问路径
-  realPath: D:/keshe_of_LocalFiles
+  realPath: E:\Idea\Idea_project\ai_edu\ai_edu_server\src\main\java\com\coder_mart_server\filesStore\
 
 spring:
   servlet:

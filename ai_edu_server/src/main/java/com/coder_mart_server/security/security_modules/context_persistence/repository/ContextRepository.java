@@ -37,8 +37,8 @@ public class ContextRepository implements SecurityContextRepository {
 
         HttpServletRequest request = requestResponseHolder.getRequest();
 
-        //若是登录请求，则创建一个新对象
-        if(isLoginRequest(request)){
+        //若是登录请求，或者资源请求，则创建一个新对象
+        if(isLoginRequest(request) || isResource(request)){
             securityContext.setAuthentication(new AuthenticationResult());
             return securityContext;
         }
@@ -80,12 +80,20 @@ public class ContextRepository implements SecurityContextRepository {
     public boolean isLoginRequest(HttpServletRequest request){
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
-        //如果登录路径是拦截的登录路径，同时请求方式也与拦截要求一致
-        if(AuthenticationConstant.LOGIN_URL_PATH.equals(requestURI)
-                && AuthenticationConstant.LOGIN_URL_METHOD.equals(method)){
+        //如果登录路径是拦截的登录路径，同时请求方式也与拦截要求一致，或者是OPTIONS请求，则也放行
+        if((AuthenticationConstant.LOGIN_URL_PATH.equals(requestURI)
+                && AuthenticationConstant.LOGIN_URL_METHOD.equals(method))
+                || AuthenticationConstant.OPTIONS_URL_METHOD.equals(method)){
             return true;
         }
         return false;
+    }
+
+    //是否是资源
+    public boolean isResource(HttpServletRequest request){
+        String requestURI = request.getRequestURI();
+        //如果登录路径是拦截的登录路径，同时请求方式也与拦截要求一致，或者是OPTIONS请求，则也放行
+        return requestURI.contains("/files");
     }
 
     @Override

@@ -105,7 +105,6 @@ public class UploadController {
                                            @PathVariable Long homeworkId){
        List<AnswerVO> answerVOList = uploadService.queryAllAnswer(classId,homeworkId);
 
-
-        return Result.success(answerVOList);
+       return Result.success(answerVOList);
     }
 }

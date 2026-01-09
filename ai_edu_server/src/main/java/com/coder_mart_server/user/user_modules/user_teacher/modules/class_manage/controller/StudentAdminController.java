@@ -11,6 +11,7 @@ import com.coder_mart_server.user.user_model.entity.ClassRosterEntity;
 import com.coder_mart_server.user.user_modules.user_teacher.modules.class_manage.constant.ClassManageRedisKeyConstant;
 import com.coder_mart_server.user.user_modules.user_teacher.modules.class_manage.service.StudentAdminService;
 import com.coder_mart_server.user.user_modules.user_teacher.pojo.dto.ClassActiveStudentDTO;
+import com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.StudentInfoVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,22 @@ import java.util.List;
 public class StudentAdminController {
     //学生管理服务
     private final StudentAdminService studentAdminService;
+
+    //todo 查看当前班级中所有学生信息
+
+    /**
+     * 查看班级中所有学生信息
+     * @param classId 班级信息
+     * @return
+     */
+    @GetMapping("/get/info/{classId}")
+    @PermissionsType(types = {PermissionsConstant.HEAD_TEACHER,PermissionsConstant.TEACHER_ROLES})
+    public Result<List<StudentInfoVO>> getStudentsInfo(@PathVariable("classId") Long classId){
+
+        List<StudentInfoVO> studentInfoInClass = studentAdminService.getStudentInfo(classId);
+
+        return Result.success(studentInfoInClass);
+    }
 
     /**
      * 拉学生进班级

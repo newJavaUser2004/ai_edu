@@ -3,6 +3,7 @@ package com.coder_mart_server.work_publish_modules.util;
 import com.coder_mart_server.public_modules.constant.ResponseConstant;
 import com.coder_mart_server.public_modules.helppers.UniqueIdHelper;
 import com.coder_mart_server.security.security_modules.authenticator.context.ISecurity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +24,11 @@ import java.util.stream.Collectors;
  * 上传文件的工具类
  */
 
+@Slf4j
 public class UploadUtil {
 
-
     public static String upload(MultipartFile file) {
-        if (file.isEmpty()) {
+        if (file == null) {
             return ResponseConstant.ErrorMessage.UPLOAD_FILE_IS_EMPTY;
         }
 
@@ -42,9 +43,11 @@ public class UploadUtil {
         String newFilename = UUID.randomUUID() + tail;
 
         //保存文件到本地
-        Path rootDir = Paths.get("D:/keshe_of_LocalFiles");
+        Path rootDir = Paths.get("E:\\Idea\\Idea_project\\ai_edu\\ai_edu_server\\src\\main\\java\\com\\coder_mart_server\\filesStore");
+
         //文件的父目录
         Path realDir = rootDir.resolve(LocalDate.now().toString());
+
         //文件路径
         Path realFile = realDir.resolve(newFilename);
 

@@ -13,6 +13,7 @@
     <select id="findClassInfoListByTeacherId" resultType="com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassInfoVO">
         select
             tc.class_id,
+            tc.class_image_url,
             tc.class_name,
             tc.grade,
             tc.student_num,
@@ -37,7 +38,7 @@
             t_class
         values
         <foreach collection="classEntities" item="classEntity" separator="," open="(" close=")">
-            #{classEntity.classId},#{classEntity.teacherId},#{classEntity.className},
+            #{classEntity.classId},#{classEntity.teacherId},#{classEntity.classImageUrl},#{classEntity.className},
             #{classEntity.grade},#{classEntity.studentNum},#{classEntity.maxStudentNum},
             #{classEntity.createTime},#{classEntity.updateTime},#{classEntity.version},
             #{classEntity.deleted}

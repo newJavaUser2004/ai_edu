@@ -28,7 +28,8 @@ public class WebGlobalConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
 
-        registry.addResourceHandler(VirtualPath).addResourceLocations("file:"+RealPath);
+        registry.addResourceHandler(VirtualPath)
+                .addResourceLocations("file:"+RealPath);
 
     }
 
@@ -37,7 +38,8 @@ public class WebGlobalConfig implements WebMvcConfigurer {
         registry.addInterceptor(securityAuthorizationInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login")
-                .excludePathPatterns("/logout");
+                .excludePathPatterns("/logout")
+                .excludePathPatterns("/files/**");
     }
 
     /**
@@ -57,7 +59,7 @@ public class WebGlobalConfig implements WebMvcConfigurer {
      * 过滤器跨域配置
      * @return
      */
-    @Bean
+//    @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));

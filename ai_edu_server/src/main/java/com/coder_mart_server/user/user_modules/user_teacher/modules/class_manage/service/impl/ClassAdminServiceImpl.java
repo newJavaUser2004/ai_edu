@@ -15,6 +15,7 @@ import com.coder_mart_server.user.user_modules.user_teacher.pojo.dto.ClassInfoCh
 import com.coder_mart_server.user.user_modules.user_teacher.pojo.dto.ClassInfoDTO;
 import com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassInfoVO;
 import com.coder_mart_server.user.user_modules.user_teacher.pojo.vo.ClassRosterVO;
+import com.coder_mart_server.work_publish_modules.util.UploadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -62,26 +63,29 @@ public class ClassAdminServiceImpl implements ClassAdminService {
 
     /**
      * 添加班级
-     * @param classInfoDTOS
+     * @param classInfoDTO
      */
-    public void addClassInfo(List<ClassInfoDTO> classInfoDTOS){
+    @Override
+    public void addClassInfo(ClassInfoDTO classInfoDTO){
         ArrayList<ClassEntity> classEntities = new ArrayList<>();
 
         //获取老师id
         Long teacherId = ISecurity.getSecureUser().getUserId();
 
-        for(ClassInfoDTO classInfoDTO : classInfoDTOS){
-            ClassEntity classEntity = new ClassEntity();
-            copyNotNullProperties(classInfoDTO,classEntity);
+        ClassEntity classEntity = new ClassEntity();
+        copyNotNullProperties(classInfoDTO,classEntity);
 
-            //设置唯一班级id
-            Long classId = uniqueIdHelper.snowIdBuild();
-            classEntity.setClassId(classId);
-            //设置班级老师id
-            classEntity.setTeacherId(teacherId);
+        //设置唯一班级id
+        Long classId = uniqueIdHelper.snowIdBuild();
+        classEntity.setClassId(classId);
+        //设置班级老师id
+        classEntity.setTeacherId(teacherId);
 
-            classEntities.add(classEntity);
-        }
+        //上传文件
+        String uploadUrl = UploadUtil.upload(classInfoDTO.getFile());
+        classEntity.setClassImageUrl(uploadUrl);
+
+        classEntities.add(classEntity);
 
         //保存班级信息
         classMapper.insertClassInfo(classEntities);

@@ -30,7 +30,7 @@ public interface ClassAdminService {
      * 添加班级
      * @param classInfoDTOS
      */
-    void addClassInfo(List<ClassInfoDTO> classInfoDTOS);
+    void addClassInfo(ClassInfoDTO classInfoDTOS);
 
     /**
      * 逻辑删除班级id

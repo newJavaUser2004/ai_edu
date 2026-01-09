@@ -33,10 +33,5 @@ public class ExceptionCatchFilter extends OncePerRequestFilter {
             HttpResponseHandler.errorResponse(response, runtimeException.getMessage());
             runtimeException.printStackTrace();
         }
-        //捕获所有异常
-        catch (Exception exception){
-            HttpResponseHandler.errorResponse(response, exception.getMessage());
-            exception.printStackTrace();
-        }
     }
 }

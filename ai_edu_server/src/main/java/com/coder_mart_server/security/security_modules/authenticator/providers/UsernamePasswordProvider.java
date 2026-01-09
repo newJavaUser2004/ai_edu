@@ -1,5 +1,7 @@
 package com.coder_mart_server.security.security_modules.authenticator.providers;
 
+import com.coder_mart_server.public_modules.helppers.UniqueIdHelper;
+import com.coder_mart_server.public_modules.properties.SnowProperties;
 import com.coder_mart_server.security.security_model.entity.SecureUser;
 import com.coder_mart_server.security.security_modules.authenticator.annotation.ProviderType;
 import com.coder_mart_server.security.security_modules.authenticator.constant.ProviderConstant;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 单点登录器
@@ -31,6 +35,8 @@ public class UsernamePasswordProvider implements BaseProvider<UsernamePasswordAu
     //token参数
     private final TokenLiveProperties tokenLiveProperties;
 
+    private final UniqueIdHelper uniqueIdHelper;
+
     //获取所需类型
     @Override
     public Class<UsernamePasswordAuthentication> getParamTypeClass() {
@@ -48,8 +54,8 @@ public class UsernamePasswordProvider implements BaseProvider<UsernamePasswordAu
         SecureUser secureUser = userLoginService.userLoginByUsername(authentication);
         secureUser.setLastUpdateTime(System.currentTimeMillis());
 
-        //生成token
-        String token = secureUser.getUserId().toString();
+        //todo 生成token
+        String token = uniqueIdHelper.snowIdBuild().toString();
 
         //创建Authentication对象
         AuthenticationResult authenticationResult = new AuthenticationResult();

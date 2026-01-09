@@ -61,7 +61,7 @@ public class HttpResponseHandler {
         ServletOutputStream outputStream = response.getOutputStream();
 
         //创建异常返回对象，并解析为json
-        Result errorResult = Result.error(message);
+        Result errorResult = Result.systemError(message);
         ObjectMapper objectMapper = new ObjectMapper();
         String errorResultJson = objectMapper.writeValueAsString(errorResult);
 

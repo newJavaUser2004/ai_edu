@@ -35,6 +35,19 @@ public class StudentAdminServiceImpl implements StudentAdminService {
     private final ClassMapper classMapper;
 
     /**
+     * 查询班级学生信息
+     * @param classId 班级id
+     * @return 学生信息集合
+     */
+    @Override
+    public List<StudentInfoVO> getStudentInfo(Long classId) {
+        //根据classId进行一次性查询
+        ClassRosterVO classRostByClassId = classRosterMapper.findClassRostByClassId(classId);
+
+        return classRostByClassId.getStudentInfoVOList();
+    }
+
+    /**
      * 非线程安全地拉学生进班级
      * @param studentInvitedDTO
      * @return

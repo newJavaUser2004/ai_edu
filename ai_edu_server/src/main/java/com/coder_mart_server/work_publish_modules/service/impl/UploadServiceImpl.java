@@ -63,12 +63,15 @@ public class UploadServiceImpl implements UploadService {
         List<ResourceEntity> resourceEntityList = new ArrayList<>();
 
         for (int i = 0;i<uploadResourceDTO.getResourceDTOList().size();i++){
+            ResourceDTO resourceDTO = uploadResourceDTO.getResourceDTOList().get(i);
 
             ResourceEntity resourceEntity = new ResourceEntity();
             Long resourceId = uniqueIdHelper.snowIdBuild();
             resourceEntity.setResourceId(resourceId);
-            resourceEntity.setResourceName(uploadResourceDTO.getResourceDTOList().get(i).getResourceName());
-            resourceEntity.setUrl(getFileURL(uploadResourceDTO.getResourceDTOList().get(i).getMultipartFile()));
+            resourceEntity.setResourceName(resourceDTO.getResourceName());
+
+            String uploadUrl = UploadUtil.upload(resourceDTO.getMultipartFile());
+            resourceEntity.setUrl(uploadUrl);
             resourceEntity.setClassId(classId);
 
             resourceEntityList.add(resourceEntity);
@@ -96,7 +99,6 @@ public class UploadServiceImpl implements UploadService {
      */
     @Override
     public void deleteResource(LogicDeleteDTO logicDeleteDTO) {
-
         //todo 验证这个老师是不是管理这个班级的
        Long id = ISecurity.getSecureUser().getUserId();
        boolean teach = classTeacherMapper.permission(id, logicDeleteDTO.getClassId());
@@ -120,23 +122,24 @@ public class UploadServiceImpl implements UploadService {
 
         //循环将数据加到POList
         for (int i = 0; i< uploadHomeworkDTO.getHomeworkDTOList().size(); i++){
+            HomeworkDTO homeworkDTO = uploadHomeworkDTO.getHomeworkDTOList().get(i);
+
             Homework homeworkPO = new Homework();
             Long homeworkId = uniqueIdHelper.snowIdBuild();
 
             homeworkPO.setClassId(classId);
-            homeworkPO.setDeadline(uploadHomeworkDTO.getHomeworkDTOList().get(i).getDeadline());
-            homeworkPO.setUrl(getFileURL(uploadHomeworkDTO.getHomeworkDTOList().get(i).getMultipartFile()));
-            homeworkPO.setWorkName(uploadHomeworkDTO.getHomeworkDTOList().get(i).getWorkName());
-            homeworkPO.setWorkType(uploadHomeworkDTO.getHomeworkDTOList().get(i).getWorkType());
+            homeworkPO.setDeadline(homeworkDTO.getDeadline());
+            String uploadUrl = UploadUtil.upload(homeworkDTO.getMultipartFile());
+            homeworkPO.setUrl(uploadUrl);
+            homeworkPO.setWorkName(homeworkDTO.getWorkName());
+            homeworkPO.setWorkType(homeworkDTO.getWorkType());
             homeworkPO.setHomeworkId(homeworkId);
 
             homeworkList.add(homeworkPO);
 
         }
 
-            homeworkMapper.uploadHomework(homeworkList);
-
-
+        homeworkMapper.uploadHomework(homeworkList);
     }
 
     /**
@@ -174,7 +177,8 @@ public class UploadServiceImpl implements UploadService {
             stuAnswer.setContentId(contentId);
             stuAnswer.setClassId(stuAnswer.getClassId());
             stuAnswer.setHomeworkId(selfHomeworkDTO.getHomeworkId());
-            stuAnswer.setUrl(getFileURL(selfHomeworkDTO.getMultipartFile()));
+            String imageUrl = UploadUtil.upload(selfHomeworkDTO.getMultipartFile());
+            stuAnswer.setUrl(imageUrl);
 
 
         }
@@ -187,19 +191,5 @@ public class UploadServiceImpl implements UploadService {
 
         answerMapper.queryAllAnswer();
         return null;
-    }
-
-
-    /**
-     * 获取上传文件的url
-      */
-    private String getFileURL(MultipartFile file){
-
-        //文件入盘
-        if (file.isEmpty()){
-            return null;
-        }
-        System.out.println(file);
-        return UploadUtil.upload(file);
     }
 }

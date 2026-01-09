@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 @ToString
 public class ClassInfoDTO {
+    //班级图片文件
+    private MultipartFile file;
+
     //班级名称
     private String className;
 

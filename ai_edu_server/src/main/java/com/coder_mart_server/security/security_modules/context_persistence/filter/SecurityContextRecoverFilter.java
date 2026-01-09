@@ -1,5 +1,6 @@
 package com.coder_mart_server.security.security_modules.context_persistence.filter;
 
+import com.coder_mart_server.security.security_constant.AuthenticationConstant;
 import com.coder_mart_server.security.security_modules.authenticator.context.ISecurityContext;
 import com.coder_mart_server.security.security_modules.authenticator.context.ISecurityContextHolder;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 import org.springframework.stereotype.Component;
 
+import javax.accessibility.AccessibleContext;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -40,12 +42,14 @@ public class SecurityContextRecoverFilter extends SecurityContextPersistenceFilt
         ISecurityContext securityContext = (ISecurityContext)contextRepository.loadContext(holder);
         ISecurityContextHolder.setSecurityContext(securityContext);
 
-        try {
-            chain.doFilter(holder.getRequest(), holder.getResponse());
-        }finally {
+        //放行到下一个过滤器
+        chain.doFilter(holder.getRequest(), holder.getResponse());
+
+        //当不是测试请求时，则进行刷新认证操作
+        if (!request.getMethod().equals(AuthenticationConstant.OPTIONS_URL_METHOD)) {
             //刷新认证信息
             contextRepository.saveContext(ISecurityContextHolder.getContext(),
-                    holder.getRequest(),holder.getResponse()
+                    holder.getRequest(), holder.getResponse()
             );
             //清除上下文
             ISecurityContextHolder.clearContext();

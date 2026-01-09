@@ -16,6 +16,9 @@ public class ClassInfoVO implements Serializable {
     //班级id
     private Long classId;
 
+    //班级图片
+    private String classImageUrl;
+
     //班级名称
     private String className;
 

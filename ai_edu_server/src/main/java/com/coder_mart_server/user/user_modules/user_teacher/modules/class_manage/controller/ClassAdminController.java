@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Arrays;
@@ -35,13 +36,14 @@ public class ClassAdminController {
 
     /**
      * 查看老师对应班级的所有信息，{权限为班主任}
-     * @param teacherId
+     * @param
      * @return
      */
-    @GetMapping("/find/{teacherId}")
+    @GetMapping("/find/info")
     @PermissionsType(types = {PermissionsConstant.HEAD_TEACHER})
-    public Result<List<ClassInfoVO>> findClassInfoList(@PathVariable("teacherId") Long teacherId){
+    public Result<List<ClassInfoVO>> findClassInfoList(){
         log.info("查看老师:{}对应班级的所有信息", ISecurity.getSecureUser().getUserId());
+        Long teacherId = ISecurity.getSecureUser().getUserId();
         List<ClassInfoVO> classInfoList = classAdminService.findClassInfoList(teacherId);
         return Result.success(classInfoList);
     }
@@ -61,17 +63,24 @@ public class ClassAdminController {
 
     /**
      * 新增班级，{权限为班主任}
-     * @param classInfoDTOList
+     * @param
      * @return
      */
     @PostMapping("/add/info")
     @PermissionsType(types = {PermissionsConstant.HEAD_TEACHER})
-    public Result addClassInfo(@RequestBody List<ClassInfoDTO> classInfoDTOList){
+    public Result addClassInfo(@RequestParam("file") MultipartFile file,
+                               @RequestParam("className") String className,
+                               @RequestParam("grade") Integer grade,
+                               @RequestParam("maxStudentNum") Integer maxStudentNum){
         log.info("新增老师:{}班级",ISecurity.getSecureUser().getUserId());
-        if(classInfoDTOList == null || classInfoDTOList.isEmpty()){
-            throw new UserException(ResultEnum.PARAM_ERROR);
-        }
-        classAdminService.addClassInfo(classInfoDTOList);
+
+        ClassInfoDTO classInfoDTO = new ClassInfoDTO();
+        classInfoDTO.setFile(file);
+        classInfoDTO.setClassName(className);
+        classInfoDTO.setGrade(grade);
+        classInfoDTO.setMaxStudentNum(grade);
+
+        classAdminService.addClassInfo(classInfoDTO);
         return Result.success();
     }
 
@@ -103,4 +112,6 @@ public class ClassAdminController {
         classAdminService.changeClassInfo(classInfoChangeDTO);
         return Result.success();
     }
+
+    //todo 根据班级名模糊查询班级信息
 }

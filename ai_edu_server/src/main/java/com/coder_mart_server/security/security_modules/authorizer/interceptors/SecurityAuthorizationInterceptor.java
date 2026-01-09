@@ -30,9 +30,10 @@ public class SecurityAuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("权限拦截器");
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
+            return true;
+        }
         //获取当前请求对应的方法
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-
         SecureUser secureUser = ISecurity.getSecureUser();
 
         //判断是否有访问权限

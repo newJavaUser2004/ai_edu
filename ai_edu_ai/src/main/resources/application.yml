@@ -1,8 +1,11 @@
 spring:
   ai:
     openai:
+#      使用api的key（有次才能访问到对应的聊天模型）
       api-key: sk-cd28897d935d48a4aee386eb41d4361a
+#      模型网站
       base-url: https://dashscope.aliyuncs.com/compatible-mode
+#      聊天模型
       chat:
         options:
           model: qwen-plus-2025-07-14

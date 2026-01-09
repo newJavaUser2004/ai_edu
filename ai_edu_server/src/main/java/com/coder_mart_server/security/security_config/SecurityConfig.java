@@ -20,6 +20,7 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -46,9 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CorsFilter corsFilter = new CorsFilter(corsConfigurationSource);
         http
                 //异常捕获过滤器
                 .addFilterBefore(new ExceptionCatchFilter(), SecurityContextPersistenceFilter.class)
+                //添加cors过滤器
+                .addFilterBefore(corsFilter, ExceptionCatchFilter.class)
 
                 //上下文过滤器
                 .securityContext().disable()
@@ -81,8 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .anyRequest().authenticated()
 
                 .and()
-                .csrf().disable()
-                .cors(cors -> {
-                    cors.configurationSource(corsConfigurationSource);});
+                .csrf().disable();
     }
 }

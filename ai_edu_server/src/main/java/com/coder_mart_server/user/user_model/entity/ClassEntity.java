@@ -21,6 +21,9 @@ public class ClassEntity extends BaseEntity implements Serializable {
     //班级的管理老师id
     private Long teacherId;
 
+    //班级图片
+    private String classImageUrl;
+
     //班级名称
     private String className;
 

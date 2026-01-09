@@ -13,35 +13,35 @@ import lombok.Setter;
 public enum ResultEnum {
 
     //token过期异常
-    TOKEN_OVER_TIME_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    TOKEN_OVER_TIME_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.TOKEN_OVER_TIME),
 
     //输入的认证信息不完整
-    INPUT_LOGIN_INFO_HAS_NULL_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    INPUT_LOGIN_INFO_HAS_NULL_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.INPUT_LOGIN_INFO_HAS_NULL),
 
     //账户密码错误或用户不存在
-    USERNAME_PASSWORD_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    USERNAME_PASSWORD_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.USERNAME_PASSWORD_ERROR),
 
     //权限异常
-    ROLE_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    ROLE_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.ROLE_ERROR),
 
     //参数异常
-    PARAM_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    PARAM_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.PARAM_IS_NULL),
 
     //班级不存在
-    CLASS_NULL_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    CLASS_NULL_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.CLASS_NULL),
 
     //班级人数已满
-    CLASS_STUDENT_NUM_MAX_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    CLASS_STUDENT_NUM_MAX_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.CLASS_STUDENT_NUM_MAX),
 
     //操作人异常
-    ACTION_USER_ERROR(ResponseConstant.Code.CODE_ERROR_CODE,
+    ACTION_USER_ERROR(ResponseConstant.Code.SUCCESS_CODE,
             ResponseConstant.ErrorMessage.ACTION_USER_NOT_OWN
     );
 

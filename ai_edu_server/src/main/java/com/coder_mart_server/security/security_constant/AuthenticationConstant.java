@@ -16,4 +16,7 @@ public class AuthenticationConstant {
 
     //退出登录接口请求方式
     public final static String LOGOUT_URL_METHOD = "GET";
+
+    //浏览器跨域测试请求
+    public final static String OPTIONS_URL_METHOD = "OPTIONS";
 }

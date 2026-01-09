@@ -71,6 +71,19 @@ public class Result<T> implements Serializable {
      */
     public static Result error(String message){
         Result result = new Result();
+        result.setCode(ResponseConstant.Code.SUCCESS_CODE);
+        result.setMessage(message);
+        result.setDate(null);
+        return result;
+    }
+
+    /**
+     * 系统级别错误
+     * @param message 错误信息
+     * @return 结果
+     */
+    public static Result systemError(String message){
+        Result result = new Result();
         result.setCode(ResponseConstant.Code.CODE_ERROR_CODE);
         result.setMessage(message);
         result.setDate(null);
